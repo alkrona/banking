@@ -1,9 +1,9 @@
 import pandas as pd
 import re
 
-def transform_data(input_file_path:str,output_file_path:str)->None:
-    columns = ['transaction_id', 'timestamp', 'payee', 'description', 'raw_description', 'amount', 'balance', 'receipt_number']
-    df = pd.read_csv(input_file_path, index_col = None,header=None,names=columns)
+def transform_data(df):
+   
+    
     df['category']='other'
     df.loc[df['raw_description'].str.contains(r'AQUATIC', flags=re.IGNORECASE), 'category'] = 'GYM'
     df.loc[df['raw_description'].str.contains(r'Lebara', flags=re.IGNORECASE), 'category'] = 'LEBARA'
@@ -18,7 +18,7 @@ def transform_data(input_file_path:str,output_file_path:str)->None:
     df.loc[df['raw_description'].str.contains(r'OVERDRAW',flags=re.IGNORECASE), 'category']='COMM'
     df.loc[df['raw_description'].str.contains(r'RENT',flags=re.IGNORECASE), 'category']='RENT'
     df.loc[df['raw_description'].str.contains(r'BARBER',flags=re.IGNORECASE), 'category']='BARBER'
-    df.to_csv(output_file_path,header=None,index=None)
+    return df 
 
 def main():
     transform_data(input_file_path="../data/data2.csv",output_file_path='../data/gold/data2.csv')
